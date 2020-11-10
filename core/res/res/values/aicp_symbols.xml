@@ -209,4 +209,6 @@
   <!--Exposed Java styles for power menu -->
   <java-symbol type="style" name="Theme.Power.Dialog" />
 
+  <!-- Cycle through ringer modes -->
+  <java-symbol type="string" name="volume_dialog_ringer_guidance_normal" />
 </resources>
