@@ -4591,6 +4591,12 @@ public final class Settings {
         public static final String FOD_ANIM = "fod_recognizing_animation_list";
 
         /**
+         * FOD icon picker
+         * @hide
+         */
+        public static final String FOD_ICON = "fod_icon";
+
+        /**
          * Show pointer location on screen?
          * 0 = no
          * 1 = yes
