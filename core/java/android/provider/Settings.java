@@ -4597,6 +4597,12 @@ public final class Settings {
         public static final String FOD_ICON = "fod_icon";
 
         /**
+         * FOD pressed color
+         * @hide
+         */
+        public static final String FOD_COLOR = "fod_color";
+
+        /**
          * Show pointer location on screen?
          * 0 = no
          * 1 = yes
