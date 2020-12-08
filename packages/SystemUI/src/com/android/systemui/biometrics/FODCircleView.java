@@ -76,8 +76,8 @@ public class FODCircleView extends ImageView {
 
     private int mColorBackground;
 
-    private int mDreamingOffsetY;
     private int mDreamingOffsetX;
+    private int mDreamingOffsetY;
     private boolean mFading;
     private boolean mIsBouncer;
     private boolean mIsBiometricRunning;
@@ -125,6 +125,15 @@ public class FODCircleView extends ImageView {
         R.drawable.fod_icon_scratch_red_blue,
         R.drawable.fod_icon_fire_ice_ouroboros,
         R.drawable.fod_icon_transparent
+    };
+
+    private int mDefaultPressedColor;
+    private int mPressedColor;
+    private final int[] PRESSED_COLOR = {
+        R.drawable.fod_icon_pressed,
+        R.drawable.fod_icon_pressed_cyan,
+        R.drawable.fod_icon_pressed_green,
+        R.drawable.fod_icon_pressed_yellow
     };
 
     private IFingerprintInscreenCallback mFingerprintInscreenCallback =
@@ -253,6 +262,8 @@ public class FODCircleView extends ImageView {
         Resources res = context.getResources();
 
         mColorBackground = res.getColor(R.color.config_fodColorBackground);
+        mDefaultPressedColor = res.getInteger(com.android.internal.R.
+             integer.config_fod_pressed_color);
         mPaintFingerprintBackground.setColor(mColorBackground);
         mPaintFingerprintBackground.setAntiAlias(true);
 
@@ -286,12 +297,11 @@ public class FODCircleView extends ImageView {
             @Override
             protected void onDraw(Canvas canvas) {
                 if (mIsCircleShowing) {
-                    canvas.drawCircle(mSize / 2, mSize / 2, mSize / 2.0f, mPaintFingerprintBackground);
+                    setImageResource(PRESSED_COLOR[mPressedColor]);
                 }
                 super.onDraw(canvas);
             }
         };
-        mPressedView.setImageResource(R.drawable.fod_icon_pressed);
 
         mWindowManager.addView(this, mParams);
 
@@ -323,13 +333,16 @@ public class FODCircleView extends ImageView {
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.FOD_ICON),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.FOD_COLOR),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.FOD_ANIM)) || uri.equals(Settings.System.getUriFor(
-                Settings.System.FOD_ICON))) {
+            if (uri.equals(Settings.System.getUriFor(Settings.System.FOD_ANIM)) ||
+                    uri.equals(Settings.System.getUriFor(Settings.System.FOD_ICON)) ||
+                    uri.equals(Settings.System.getUriFor(Settings.System.FOD_COLOR))) {
                 updateStyle();
             }
         }
@@ -522,6 +535,8 @@ public class FODCircleView extends ImageView {
                 Settings.System.FOD_RECOGNIZING_ANIMATION, 0) != 0;
         mSelectedIcon = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.FOD_ICON, 0);
+        mPressedColor = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.FOD_COLOR, mDefaultPressedColor);
         if (mFODAnimation != null) {
             mFODAnimation.update();
         }
