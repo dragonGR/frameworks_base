@@ -438,9 +438,7 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN && newIsInside) {
             showCircle();
-            if (mIsRecognizingAnimEnabled) {
-                mHandler.post(() -> mFODAnimation.showFODanimation());
-            }
+            mHandler.post(() -> mFODAnimation.showFODanimation());
             return true;
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             hideCircle();
@@ -601,7 +599,7 @@ public class FODCircleView extends ImageView implements TunerService.Tunable {
         mPressedColor = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.FOD_COLOR, mDefaultPressedColor);
         if (mFODAnimation != null) {
-            mFODAnimation.update();
+            mFODAnimation.update(mIsRecognizingAnimEnabled);
         }
     }
 
