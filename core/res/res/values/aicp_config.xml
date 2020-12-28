@@ -265,4 +265,7 @@
         <item>2</item>
         <item>3</item>
     </array>
+
+    <!-- FOD icon dim-->
+    <bool name="config_targetUsesInKernelDimming">false</bool>
 </resources>
