@@ -377,6 +377,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
      * Hides a view.
      */
     private void animateHide(final View v, boolean animate) {
+        if (v.getVisibility() == View.GONE)
+            return;
         animateHiddenState(v, View.INVISIBLE, animate);
     }
 
@@ -387,6 +389,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         if (v instanceof Clock && !((Clock)v).isClockVisible()) {
             return;
         }
+        if (v.getVisibility() == View.GONE)
+            return;
         v.animate().cancel();
         v.setVisibility(View.VISIBLE);
         if (!animate) {
