@@ -224,7 +224,7 @@ public class FODCircleView extends ImageView {
         }
 
         @Override
-        public void onScreenTurnedOff() {
+        public void onStartedGoingToSleep(int why) {
             hide();
         }
 
