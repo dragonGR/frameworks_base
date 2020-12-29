@@ -97,6 +97,7 @@ public class FODCircleView extends ImageView {
     private final WindowManager.LayoutParams mParams = new WindowManager.LayoutParams();
     private final WindowManager.LayoutParams mPressedParams = new WindowManager.LayoutParams();
     private final WindowManager mWindowManager;
+    private final boolean mDeviceFlickersGoingToSleep;
 
     private IFingerprintInscreen mFingerprintInscreenDaemon;
     private Context mContext;
@@ -225,7 +226,17 @@ public class FODCircleView extends ImageView {
 
         @Override
         public void onStartedGoingToSleep(int why) {
+            if (mDeviceFlickersGoingToSleep) {
+                hide();
+            }
             hide();
+        }
+
+        @Override
+        public void onScreenTurnedOff() {
+            if (!mDeviceFlickersGoingToSleep) {
+                hide();
+            }
         }
 
         @Override
@@ -302,6 +313,9 @@ public class FODCircleView extends ImageView {
         mPaintFingerprintBackground.setColor(res.getColor(R.color.config_fodColorBackground));
         mTargetUsesInKernelDimming = res.getBoolean(com.android.internal.R.bool.config_targetUsesInKernelDimming);
         mPaintFingerprintBackground.setAntiAlias(true);
+
+        mDeviceFlickersGoingToSleep = mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_inDisplayFingerprintFlickersGoingToSleep);
 
         mWindowManager = context.getSystemService(WindowManager.class);
 
